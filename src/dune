@@ -1,0 +1,32 @@
+(library
+ (name faugere)
+ (libraries ctypes ctypes.foreign)
+ (modules :standard \ gen bindings)
+ (package faugere)
+ (foreign_stubs
+  (include_dirs call_FGb/headers)
+  (language c)
+  (names stub)
+  (flags :standard -lfgb -lfgbexp -lgb -lgbexp -lminpoly -lminpolyvgf -lgmp -lm -lstdc++ -lgomp -fopenmp -w)
+ )
+ (c_library_flags :standard -Lsrc/call_FGb/nv/maple/C/%{system} -lfgb -lfgbexp -lgb -lgbexp -lminpoly -lminpolyvgf -lgmp -lm -lstdc++ -lgomp)
+ )
+
+
+(executable
+  (name gen)
+  (modules gen bindings)
+  (libraries ctypes.stubs ctypes)
+)
+
+(rule
+  (targets stub.c stub.ml)
+  (deps gen.exe)
+  (action (run ./gen.exe))
+)
+
+(rule
+  (targets bind.ml)
+  (deps bindings.ml)
+  (action (copy bindings.ml bind.ml))
+)

@@ -130,4 +130,7 @@ let fgb polys =
   let t0 = allocate_n double ~count:1 in
   let num_out = fgb_int input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int 100000) t0 (addr (set_default_options ())) in
   let opolys = CArray.to_list (CArray.from_ptr output_basis (Unsigned.UInt32.to_int num_out)) in
-  List.map export_poly opolys
+  let res = List.map export_poly opolys in
+  reset_memory_int (); (*not sure if these lines are necessary*)
+  restoreptr_int ();
+  res

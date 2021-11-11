@@ -29,23 +29,23 @@ int FGb_verb_info = 0;
 extern FILE* log_output;
 void info_Maple(const char* s)
 {
-  if (FGb_verb_info)
-    {
-      fprintf(stderr,"%s",s);
-      fflush(stderr);
-    }
+  //if (FGb_verb_info)
+  //  {
+  //    fprintf(stderr,"%s",s);
+  //    fflush(stderr);
+  //  }
 }
 
 void FGb_int_error_Maple(const char* s)
 {
-  fprintf(stderr,"%s",s);
-  fflush(stderr);
-  exit(3);
+  //fprintf(stderr,"%s",s);
+  //fflush(stderr);
+  //exit(3);
 }
 
 void FGb_error_Maple(const char* s)
 {
-  FGb_int_error_Maple(s);
+  //FGb_int_error_Maple(s);
 }
 
 

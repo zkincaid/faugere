@@ -1,18 +1,5 @@
 open Ctypes
 
-(*module Types (T : Cstubs.Types.TYPE) = struct
-  open T
-
-  let fgb_compute_gbasis = constant "FGB_COMPUTE_GBASIS" int64_t
-  let fgb_compute_rrform = constant "FGB_COMPUTE_RRFORM" int64_t
-  let fgb_compute_rrform_sqfr = constant "FGB_COMPUTE_RRFORM_SQFR" int64_t
-  let fgb_compute_minpoly = constant "FGB_COMPUTE_MINPOLY" int64_t
-  let fgb_compute_minpoly_sqfr = constant "FGB_COMPUTE_MINPOLY_SQFR" int64_t
-  let fgb_compute_gbasis_nf = constant "FGB_COMPUTE_GBASIS_NF" int64_t
-  let fgb_compute_gbasis_nf_recompute = constant "FGB_COMPUTE_GBASIS_NF_RECOMPUTE" int64_t
-  let fgb_compute_radical_strateg1 = constant "FGB_COMPUTE_RADICAL_STRATEG1" int64_t
-
-end*)
 
 module Bindings (F : Cstubs.FOREIGN) = struct
   open F
