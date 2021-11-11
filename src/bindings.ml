@@ -31,6 +31,10 @@ module Bindings (F : Cstubs.FOREIGN) = struct
   let mpz_srcptr : mpz_srcptr typ = ptr mpz_struct
   (*let mpz_ptr = typedef (ptr mpz_struct) "mpz_ptr"*)
  
+  
+  let mpz_init_set_str = foreign "mpz_init_set_str" (mpz_t @-> string @-> int @-> returning void)
+  let mpz_get_str = foreign "mpz_get_str" (ptr char @-> int @-> mpz_srcptr @-> returning string)
+
 
   type sfgb_comp_desc
   let sfgb_comp_desc : sfgb_comp_desc structure typ = structure "SFGB_Comp_Desc"
@@ -66,13 +70,11 @@ module Bindings (F : Cstubs.FOREIGN) = struct
 
   let threads_fgb = foreign "threads_FGb" (int @-> returning void)
 
-
-  let reset_memory = foreign "FGb_reset_memory" (void @-> returning void)
-
-
-  let alloc_int = foreign "FGb_int_alloc" (ui32 @-> returning string)
+  (*----------------------------------Integer functions----------------------------------*)
 
   let reset_memory_int = foreign "FGb_int_reset_memory" (void @-> returning void)
+
+  let alloc_int = foreign "FGb_int_alloc" (ui32 @-> returning string)
 
   let init_urgent_int = foreign "FGb_int_init_urgent" (ui32 @-> ui32 @-> string @-> ui32 @-> bool @-> returning void)
 
@@ -80,7 +82,7 @@ module Bindings (F : Cstubs.FOREIGN) = struct
 
   let creat_poly_int = foreign "FGb_int_creat_poly" (ui32 @-> returning dpol)
 
-  let assign_expos_int = foreign "FGb_assign_expos" (ptr i32 @-> i32 @-> returning expos)
+  let assign_expos_int = foreign "FGb_int_assign_expos" (ptr i32 @-> i32 @-> returning expos)
 
   let reset_expos_int = foreign "FGb_int_reset_expos" (ui32 @-> ui32 @-> ptr string @-> returning void)
 
@@ -91,9 +93,6 @@ module Bindings (F : Cstubs.FOREIGN) = struct
   let enter_INT = foreign "FGb_int_enter_INT" (void @-> returning void)
 
   let exit_INT = foreign "FGb_int_exit_INT" (void @-> returning void)
-
-  let mpz_init_set_str = foreign "mpz_init_set_str" (mpz_t @-> string @-> int @-> returning void)
-  let mpz_get_str = foreign "mpz_get_str" (ptr char @-> int @-> mpz_srcptr @-> returning string)
 
   let set_coeff_gmp_int = foreign "FGb_int_set_coeff_gmp" (dpol_int @-> ui32 @-> mpz_t @-> returning void)
 
@@ -122,6 +121,55 @@ module Bindings (F : Cstubs.FOREIGN) = struct
   let power_set_int = foreign "FGb_int_PowerSet" (ui32 @-> ui32 @-> ptr string @-> returning void)
   
   let fgb_int = foreign "FGb_int_fgb" (ptr dpol @-> ui32 @-> ptr dpol @-> ui32 @-> ptr double @-> fgb_options @-> returning ui32)
+
+
+  (*--------------------------------------------------Modular functions------------------------------------------*)
+
+  let reset_memory = foreign "FGb_reset_memory" (void @-> returning void)
+
+  let alloc = foreign "FGb_alloc" (ui32 @-> returning string)
+
+  let init_urgent = foreign "FGb_init_urgent" (ui32 @-> ui32 @-> string @-> ui32 @-> bool @-> returning void)
+
+  (*let init = foreign "FGb_int_init" (bool @-> bool @-> bool @-> FILE)*)
+
+  let creat_poly = foreign "FGb_creat_poly" (ui32 @-> returning dpol)
+
+  let assign_expos = foreign "FGb_assign_expos" (ptr i32 @-> i32 @-> returning expos)
+
+  let reset_expos = foreign "FGb_reset_expos" (ui32 @-> ui32 @-> ptr string @-> returning void)
+
+  let reset_coeffs = foreign "FGb_reset_coeffs" (ui32 @-> ptr ui32 @-> returning void)
+
+  let set_coeff_i32 = foreign "FGb_set_coeff_I32" (dpol @-> ui32 @-> i32 @-> returning void)
+
+  let set_expos_d = foreign "FGb_set_expos_d" (dpol @-> ui32 @-> expos @-> returning void)
+
+  let full_sort_poly = foreign "FGb_full_sort_poly" (dpol @-> returning void)
+
+  let export_poly = foreign "FGb_export_poly" (i32 @-> i32 @-> ptr i32 @-> ptr i32 @-> dpol @-> returning i32)
+
+  let groebner = foreign "FGb_groebner" (ptr dpol @-> ui32 @-> ptr dpol @-> bool @-> ui32 @-> ptr double @-> ui32 @-> ui32 @-> bool @-> fgb_comp_desc @-> returning ui32)
+
+  let hilbert = foreign "FGb_hilbert" (ptr dpol @-> ui32 @-> ptr dpol @-> bool @-> ui32 @-> ptr double @-> ui32 @-> ui32 @-> bool @-> returning ui32)
+
+  let nb_terms = foreign "FGb_nb_terms" (dpol @-> returning ui32)
+
+  let set_expos2 = foreign "FGb_set_expos2" (dpol @-> ui32 @-> ptr i32 @-> ui32 @-> returning void)
+  
+  let full_sort_poly2 = foreign "FGb_full_sort_poly2" (dpol @-> returning void)
+
+  (*let export_poly_INT = foreign "FGb_export_poly_INT" (i32 @-> i32 @-> ptr i32 @-> ptr ui32 @-> ptr ui32 @-> dpol @-> ptr ui32 @-> returning i32)*)
+
+  let saveptr () = ()
+
+  let restoreptr () = ()
+
+  let init_modp = foreign "init_FGb_Modp" (int @-> returning void)
+
+  let power_set = foreign "FGb_PowerSet" (ui32 @-> ui32 @-> ptr string @-> returning void)
+  
+  let fgb = foreign "FGb_fgb" (ptr dpol @-> ui32 @-> ptr dpol @-> ui32 @-> ptr double @-> fgb_options @-> returning ui32)
 
 
 end

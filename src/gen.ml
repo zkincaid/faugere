@@ -18,17 +18,13 @@ let write_extern_c () =
   close_out c_out
 
 let () = 
-  (*let type_out = open_out "types.c" in*)
   let tmp_out = open_out "stub.c" in
   let ml_out = open_out "stub.ml" in
   Cstubs.write_ml (Format.formatter_of_out_channel ml_out) ~prefix:"fgb_stub" (module Bindings.Bindings);
   output_string tmp_out "#include \"common.h\"\n#include \"call_fgb_int.h\"\n#include \"call_fgb_mod.h\"\n";
   Cstubs.write_c (Format.formatter_of_out_channel tmp_out) ~prefix:"fgb_stub" (module Bindings.Bindings);
-  (*Cstubs.Types.write_c (Format.formatter_of_out_channel type_out) (module Bindings.Types);*)
   flush tmp_out;
   flush ml_out;
-  (*flush type_out;*)
   close_out tmp_out;
   close_out ml_out;
-  (*close_out type_out;*)
   write_extern_c ()
