@@ -1,6 +1,6 @@
 open Ctypes
 
-include Bind.Bindings(Stub)
+include Bindings.B
 
 type cpoly = unit ptr
 
