@@ -1,10 +1,10 @@
-open Faugere.Lib
+open Faugere.Fgb
 
 type monic = Prod of (string * int) list
 
-type mon = string * monic
+type 'a mon = 'a * monic
 
-type poly = PSum of mon list
+type 'a poly = PSum of 'a mon list
 
 let monic_mon_to_string (Prod ms) = 
   let var_exp_to_string (v, e) = 
