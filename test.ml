@@ -1,4 +1,4 @@
-open Faugere.Fgb
+open Faugere_zarith
 
 type monic = Prod of (string * int) list
 
@@ -14,9 +14,9 @@ let monic_mon_to_string (Prod ms) =
   String.concat "" (List.map var_exp_to_string ms)
 
 let mon_to_string (c, Prod m) =
-  if m = [] then c
-  else if c = "1" then (monic_mon_to_string (Prod m))
-  else (c) ^ (monic_mon_to_string (Prod m)) 
+  if m = [] then (Z.to_string c)
+  else if Z.compare c (Z.of_int 1) = 0 then (monic_mon_to_string (Prod m))
+  else (Z.to_string c) ^ (monic_mon_to_string (Prod m)) 
 
 let to_string (PSum p) = 
   String.concat " + " (List.map mon_to_string p)
@@ -32,7 +32,7 @@ let libpoly_to_poly (Sum mons) =
 
 
 let () = 
-  let p1 = Sum [("1", [1; 2; 0]); ("2", [0; 1; 1])] in
-  let p2 = Sum [("1", [1; 0; 2]); ("2", [])] in
-  let results = Fgb_int.fgb [p1; p2] variables [] in
+  let p1 = Sum [(Z.of_int 1, [1; 2; 0]); (Z.of_int 2, [0; 1; 1])] in
+  let p2 = Sum [(Z.of_int 1, [1; 0; 2]); (Z.of_int 2, [])] in
+  let results = Fgb_int_zarith.fgb [p1; p2] variables [] in
   print_endline (String.concat "\n" (List.map to_string (List.map libpoly_to_poly results)))

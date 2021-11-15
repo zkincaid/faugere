@@ -1,5 +1,5 @@
 (executable
   (name test)
   (modules test)
-  (libraries faugere)
+  (libraries faugere.zarith zarith)
 )

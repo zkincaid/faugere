@@ -14,4 +14,7 @@
    (ctypes :build)
    (ctypes-foreign :build)
  )
+ (depopts
+   (zarith :build)
+ )
 )

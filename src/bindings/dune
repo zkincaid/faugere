@@ -1,7 +1,8 @@
 (library
   (name bindings)
   (libraries ctypes ctypes.foreign)
-  (modules b stub bind)
+  (modules b stub bind common)
+  (package faugere)
   (foreign_stubs
    (include_dirs call_FGb/headers)
    (language c)

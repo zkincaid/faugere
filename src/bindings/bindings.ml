@@ -35,6 +35,8 @@ module Bindings (F : Cstubs.FOREIGN) = struct
   let mpz_init_set_str = foreign "mpz_init_set_str" (mpz_t @-> string @-> int @-> returning void)
   let mpz_get_str = foreign "mpz_get_str" (ptr char @-> int @-> mpz_srcptr @-> returning string)
 
+  let mpz_import = foreign "mpz_import" (mpz_ptr @-> PosixTypes.size_t @-> int @-> PosixTypes.size_t @-> int @-> PosixTypes.size_t @-> ptr void @-> returning void)
+  let mpz_export = foreign "mpz_export" (ptr void @-> ptr PosixTypes.size_t @-> int @-> PosixTypes.size_t @-> int @-> PosixTypes.size_t @-> mpz_srcptr @-> returning (ptr void))
 
   type sfgb_comp_desc
   let sfgb_comp_desc : sfgb_comp_desc structure typ = structure "SFGB_Comp_Desc"
