@@ -1,3 +1,4 @@
+open Faugere
 open Faugere_zarith
 
 type monic = Prod of (string * int) list
@@ -33,6 +34,6 @@ let libpoly_to_poly (Sum mons) =
 
 let () = 
   let p1 = Sum [(Z.of_int 1, [1; 2; 0]); (Z.of_int 2, [0; 1; 1])] in
-  let p2 = Sum [(Z.of_int 1, [1; 0; 2]); (Z.of_int 2, [])] in
+  let p2 = Sum [(Z.of_int 1, [1; 0; 2]); (Z.of_int 2, [0; 0; 0])] in
   let results = Fgb_int_zarith.fgb [p1; p2] variables [] in
   print_endline (String.concat "\n" (List.map to_string (List.map libpoly_to_poly results)))

@@ -8,7 +8,15 @@
 (library
  (name faugere_zarith)
  (public_name faugere.zarith)
- (libraries bindings ctypes zbind)
+ (libraries bindings ctypes zbind faugere)
  (modules faugere_zarith)
  (optional)
 )
+
+;(library
+; (name faugere_gmpidl)
+; (public_name faugere.gmpidl)
+; (libraries bindings ctypes mlgmpidlbind faugere)
+; (modules faugere_gmpidl)
+; (optional)
+;)

@@ -3,33 +3,20 @@ open Bindings.B
 
 include Bindings.Common
 
-module type Fgb_opt = sig
-
-  val set_max_output_size : int -> unit
-  val set_index : int -> unit
-  val set_fgb_verbosity : int -> unit
-  val set_force_elim : int -> unit
-  val set_number_of_threads : int -> unit
-
-end
-
-module Fgb_int_str = struct 
+module Fgb_int (C : sig 
+                    type coef
+                    val coef_to_mpz : coef -> mpz_t
+                    val mpz_to_coef : mpz_t -> coef
+                    end) = struct 
  include Make (struct
     let power_set = power_set_int
   
-    type coef = string
+    type coef = C.coef
     type ccoef = mpz_t
     let ccoef = mpz_t
-    let coef_to_c s = 
-      let res = CArray.start (CArray.make mpz_struct 1) in
-      mpz_init_set_str res s 10;
-      res
+    let coef_to_c = C.coef_to_mpz
 
-    let ccoef_to_ml mpz = 
-      let buff = from_voidp char null in
-      let res = mpz_get_str buff 10 mpz in
-      res
-
+    let ccoef_to_ml = C.mpz_to_coef
     let set_coef = set_coeff_gmp_int
     let creat_poly = creat_poly_int
     let set_exp = set_expos2_int
@@ -57,6 +44,19 @@ module Fgb_int_str = struct
     res
 
 end
+
+module Fgb_int_str = 
+  Fgb_int (struct
+    type coef = string
+    let coef_to_mpz c = let res = CArray.start (CArray.make mpz_struct 1) in
+      mpz_init_set_str res c 10;
+      res
+
+    let mpz_to_coef mpz = 
+      let buff = from_voidp char null in
+      let res = mpz_get_str buff 10 mpz in
+      res
+  end)
 
 module Fgb_mod = struct
   include Make (struct

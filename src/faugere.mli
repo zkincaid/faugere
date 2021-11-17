@@ -1,20 +1,17 @@
-type fmonic = int list
+include Bindings.Common.Poly
 
-type 'a fmon = 'a * fmonic
+module type Fgb_opt = Bindings.Common.Fgb_opt
 
-type 'a fpoly = Sum of 'a fmon list
+module Fgb_int : functor (C : sig type coef val coef_to_mpz : coef -> Bindings.B.mpz_t val mpz_to_coef : Bindings.B.mpz_t -> coef end) ->
+  sig
+  
+  include Fgb_opt
 
-module type Fgb_opt = sig
-
-  val set_max_output_size : int -> unit
-  val set_index : int -> unit
-  val set_fgb_verbosity : int -> unit
-  val set_force_elim : int -> unit
-  val set_number_of_threads : int -> unit
-
+  val fgb : C.coef fpoly list -> string list -> string list -> C.coef fpoly list
+  
 end
 
-  
+
 module Fgb_int_str : sig
 
   include Fgb_opt
