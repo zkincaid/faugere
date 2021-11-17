@@ -53,6 +53,6 @@
 )
 
 (install
-  (section lib)
+  (section stublibs)
   (files libfgb.a libfgbexp.a libgb.a libgbexp.a libminpoly.a libminpolyvgf.a)
 )
