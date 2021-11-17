@@ -10,12 +10,6 @@
     call_FGb/nv/maple/C/linux/gbexp
     call_FGb/nv/maple/C/linux/minpoly
     call_FGb/nv/maple/C/linux/minpolyvgf
-    call_FGb/nv/maple/C/macosx/fgb
-    call_FGb/nv/maple/C/macosx/fgbexp
-    call_FGb/nv/maple/C/macosx/gb
-    call_FGb/nv/maple/C/macosx/gbexp
-    call_FGb/nv/maple/C/macosx/minpoly
-    call_FGb/nv/maple/C/macosx/minpolyvgf
   )
   (foreign_stubs
    (include_dirs call_FGb/headers)
