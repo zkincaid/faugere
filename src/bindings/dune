@@ -18,6 +18,7 @@
    (flags :standard -lfgb -lfgbexp -lgb -lgbexp -lminpoly -lminpolyvgf -lgmp -lm -lstdc++ -lgomp -fopenmp -w)
   )
   (c_library_flags :standard -L%{project_root}/src/bindings/call_FGb/nv/maple/C/%{system} -lfgb -lfgbexp -lgb -lgbexp -lminpoly -lminpolyvgf -lgmp -lm -lstdc++ -lgomp)
+  (modes native)
 )
 
 
