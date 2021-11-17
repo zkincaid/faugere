@@ -53,6 +53,6 @@
 )
 
 (install
-  (section stublibs)
+  (section (site faugere __private__/bindings))
   (files libfgb.a libfgbexp.a libgb.a libgbexp.a libminpoly.a libminpolyvgf.a)
 )
