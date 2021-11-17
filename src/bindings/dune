@@ -54,5 +54,11 @@
 
 (install
   (section lib)
-  (files (libfgb.a as __private__/bindings/libfgb.a) libfgbexp.a libgb.a libgbexp.a libminpoly.a libminpolyvgf.a)
+  (files (libfgb.a as __private__/bindings/libfgb.a) 
+         (libfgbexp.a as __private__/bindings/libfgbexp.a)
+         (libgb.a as __private__/bindings/libgb.a)
+         (libgbexp.a as __private__/bindings/libgbexp.a)
+         (libminpoly.a as __private__/bindings/libminpoly.a)
+         (libminpolyvgf.a as __private__/bindings/libminpolyvgf.a)
+  )
 )
