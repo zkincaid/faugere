@@ -17,7 +17,6 @@
    (names stub)
    (flags :standard -lfgb -lfgbexp -lgb -lgbexp -lminpoly -lminpolyvgf -lgmp -lm -lstdc++ -lgomp -fopenmp -w)
   )
-  ;(c_library_flags :standard -Lsrc/bindings/call_FGb/nv/maple/C/%{system} -lfgb -lfgbexp -lgb -lgbexp -lminpoly -lminpolyvgf -lgmp -lm -lstdc++ -lgomp)
   (c_library_flags :standard -Lsrc/bindings -lfgb -lfgbexp -lgb -lgbexp -lminpoly -lminpolyvgf -lgmp -lm -lstdc++ -lgomp)
 )
 
@@ -52,18 +51,18 @@
   )
 )
 
-(install
-  (section stublibs)
-  (files libfgb.a libfgbexp.a libgb.a libgbexp.a libminpoly.a libminpolyvgf.a)
-)
-
 ;(install
-;  (section lib)
-;  (files (libfgb.a as __private__/bindings/libfgb.a) 
-;         (libfgbexp.a as __private__/bindings/libfgbexp.a)
-;         (libgb.a as __private__/bindings/libgb.a)
-;         (libgbexp.a as __private__/bindings/libgbexp.a)
-;         (libminpoly.a as __private__/bindings/libminpoly.a)
-;         (libminpolyvgf.a as __private__/bindings/libminpolyvgf.a)
-;  )
+;  (section stublibs)
+;  (files libfgb.a libfgbexp.a libgb.a libgbexp.a libminpoly.a libminpolyvgf.a)
 ;)
+
+(install
+  (section lib)
+  (files (libfgb.a as __private__/bindings/libfgb.a) 
+         (libfgbexp.a as __private__/bindings/libfgbexp.a)
+         (libgb.a as __private__/bindings/libgb.a)
+         (libgbexp.a as __private__/bindings/libgbexp.a)
+         (libminpoly.a as __private__/bindings/libminpoly.a)
+         (libminpolyvgf.a as __private__/bindings/libminpolyvgf.a)
+  )
+)
