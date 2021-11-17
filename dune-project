@@ -11,7 +11,7 @@
 
 (package
  (name faugere)
- (synopsis "Provides an interface to a c library implementing Faugere's Grobner basis algorithms.")
+ (synopsis "Provides an interface to a c library implementing Faugere's Grobner basis algorithms")
  (depends
    (ctypes :build)
    (ctypes-foreign :build)

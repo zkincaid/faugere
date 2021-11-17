@@ -12,6 +12,7 @@
   (c_library_flags :standard -Lsrc/bindings/call_FGb/nv/maple/C/%{system} -lfgb -lfgbexp -lgb -lgbexp -lminpoly -lminpolyvgf -lgmp -lm -lstdc++ -lgomp)
 )
 
+(data_only_dirs call_FGb)
 
 (executable
   (name gen)
