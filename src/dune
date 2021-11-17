@@ -12,11 +12,3 @@
  (modules faugere_zarith)
  (optional)
 )
-
-;(library
-; (name faugere_gmpidl)
-; (public_name faugere.gmpidl)
-; (libraries bindings ctypes mlgmpidlbind faugere)
-; (modules faugere_gmpidl)
-; (optional)
-;)

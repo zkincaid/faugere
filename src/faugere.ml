@@ -3,6 +3,16 @@ open Bindings.B
 
 include Bindings.Common
 
+module type Fgb_opt = sig
+
+  val set_max_output_size : int -> unit
+  val set_index : int -> unit
+  val set_fgb_verbosity : int -> unit
+  val set_force_elim : int -> unit
+  val set_number_of_threads : int -> unit
+
+end
+
 module Fgb_int (C : sig 
                     type coef
                     val coef_to_mpz : coef -> mpz_t

@@ -2,13 +2,13 @@ open Ctypes
 
 open B
 
-type cpoly = unit ptr
-
 type fmonic = int list
 
 type 'a fmon = 'a * fmonic
 
-type 'a fpoly = Sum of 'a fmon list
+type cpoly = unit ptr
+
+
 
 
 module Make (A : sig
@@ -70,7 +70,7 @@ module Make (A : sig
     let n_vars_block2 = Unsigned.UInt32.of_int (List.length block2) in
     A.power_set n_vars_block1 n_vars_block2 (CArray.start (CArray.of_list string (block1 @ block2)))
     
-  let create_poly ((Sum mon_list) : A.coef fpoly) : cpoly = 
+  let create_poly (mon_list : A.coef fmon list) : cpoly = 
     let nm = List.length mon_list in
     let p = A.creat_poly (Unsigned.UInt32.of_int nm) in
     let iterator i (coef, e) = 
@@ -81,7 +81,7 @@ module Make (A : sig
     A.sort_poly p;
     p
     
-  let export_poly nb_vars (poly : cpoly) = 
+  let export_poly nb_vars (poly : cpoly) : (A.coef fmon list) = 
     let nb_mons = Unsigned.UInt32.to_int (A.nb_terms poly) in
     let mons = allocate_n i32 ~count:(nb_mons * nb_vars) in
     let cfs = allocate_n A.ccoef ~count:nb_mons in
@@ -97,25 +97,6 @@ module Make (A : sig
     let mapper cf exp =
       (A.ccoef_to_ml cf, exp)
     in
-    let epoly = List.map2 mapper cfs_list exp_list in
-    Sum epoly
+    List.map2 mapper cfs_list exp_list
 
-end
-
-module type Fgb_opt = sig
-
-  val set_max_output_size : int -> unit
-  val set_index : int -> unit
-  val set_fgb_verbosity : int -> unit
-  val set_force_elim : int -> unit
-  val set_number_of_threads : int -> unit
-
-end
-
-module type Poly = sig
-  type fmonic = int list
-
-  type 'a fmon = 'a * fmonic
-
-  type 'a fpoly = Sum of 'a fmon list
 end
