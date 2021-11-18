@@ -18,8 +18,8 @@
    (names stub)
    (flags :standard -lfgb -lfgbexp -lgb -lgbexp -lminpoly -lminpolyvgf -lgmp -lm -lstdc++ -lgomp -fopenmp -w)
   )
-  (c_library_flags :standard -Lsrc -lfgb -lfgbexp -lgb -lgbexp -lminpoly -lminpolyvgf -lgmp -lm -lstdc++ -lgomp)
-  ;(modes native)
+  (c_library_flags :standard -lfgb -lfgbexp -lgb -lgbexp -lminpoly -lminpolyvgf -lgmp -lm -lstdc++ -lgomp)
+  (modes native)
 )
 
 (library
