@@ -1,6 +1,6 @@
 open Ctypes
 
-open Bindings.B
+open Bindings.Common
 
 
 module Fgb_int_zarith = 

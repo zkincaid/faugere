@@ -1,8 +1,8 @@
 (library
   (name bindings)
+  (public_name faugere.bindings)
   (libraries ctypes ctypes.foreign)
   (modules b stub bind common)
-  (package faugere)
   (foreign_archives
     fgb
     fgbexp

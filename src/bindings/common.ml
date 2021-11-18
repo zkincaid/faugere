@@ -1,6 +1,6 @@
 open Ctypes
 
-open B
+include B
 
 type fmonic = int list
 

@@ -1,14 +1,14 @@
 (library
  (name faugere)
  (public_name faugere)
- (libraries bindings ctypes)
+ (libraries faugere.bindings ctypes)
  (modules faugere)
 )
 
 (library
  (name faugere_zarith)
  (public_name faugere.zarith)
- (libraries bindings ctypes zbind faugere)
+ (libraries faugere.bindings ctypes zbind faugere)
  (modules faugere_zarith)
  (optional)
 )
