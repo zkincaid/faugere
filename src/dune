@@ -2,6 +2,7 @@
  (name faugere)
  (public_name faugere)
  (libraries faugere.bindings ctypes)
+ (synopsis "The Faugere package entry point")
  (modules faugere)
 )
 
@@ -10,5 +11,6 @@
  (public_name faugere.zarith)
  (libraries faugere.bindings ctypes faugere.zbind faugere)
  (modules faugere_zarith)
+ (synopsis "Faugere with zarith bindings")
  (optional)
 )

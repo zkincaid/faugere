@@ -11,7 +11,7 @@ For example, within k\[x, y, z\] for some field k, [x^2yz^3] would be \[[2; 1; 3
 type 'a fmon = 'a * fmonic
 (**A monomial is a pair of a coefficient and a monic monomial.*)
 
-(**{2:Fgb options} *)
+(**{2:fgbopt Fgb options} *)
 
 module type Fgb_opt = sig
 (**Options that can be modified for the GB computation. *)
@@ -34,7 +34,7 @@ module type Fgb_opt = sig
 
 end
 
-(**{2:Grobner basis implementations.} *)
+(**{2:fgb Grobner basis implementations.} *)
 
 module Fgb_int_str : sig
 (**An implementation of fgb over the rationals. The coefficients are all infinite precision integers given as decimal strings. 
