@@ -62,7 +62,7 @@ module Fgb_mod : sig
 
 end
 
-module Fgb_int : functor (C : sig type coef val coef_to_mpz : coef -> Bindings.B.mpz_t val mpz_to_coef : Bindings.B.mpz_t -> coef end) -> sig
+module Fgb_int : functor (C : sig type coef val coef_to_mpz : coef -> unit Ctypes.ptr val mpz_to_coef : unit Ctypes.ptr -> coef end) -> sig
   (**This functor can be instantiated to give an implementation of fgb over the rationals, but with the given type [coef] as coefficients. However, one must provide
   the translations from [coef] to a gmp mpz ptr and from an mpz ptr to [coef]. This is done in the optional library faugere.zarith, which uses zarith as the type of coefficients. *)
   

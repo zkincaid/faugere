@@ -1,16 +1,112 @@
 (library
  (name faugere)
  (public_name faugere)
- (libraries faugere.bindings ctypes)
+ (libraries ctypes)
  (synopsis "The Faugere package entry point")
- (modules faugere)
+ (modules :standard \ gen bindings faugere_zarith zarith_bind)
+  (foreign_archives
+    fgb
+    fgbexp
+    gb
+    gbexp
+    minpoly
+    minpolyvgf
+  )
+  (foreign_stubs
+   (include_dirs call_FGb/headers)
+   (language c)
+   (names stub)
+   (flags :standard -lfgb -lfgbexp -lgb -lgbexp -lminpoly -lminpolyvgf -lgmp -lm -lstdc++ -lgomp -fopenmp -w)
+  )
+  (c_library_flags :standard -lfgb -lfgbexp -lgb -lgbexp -lminpoly -lminpolyvgf -lgmp -lm -lstdc++ -lgomp)
+  (modes native)
 )
 
 (library
  (name faugere_zarith)
  (public_name faugere.zarith)
- (libraries faugere.bindings ctypes faugere.zbind faugere)
- (modules faugere_zarith)
+ (libraries ctypes ppx_cstubs faugere zarith)
+ (foreign_stubs
+   (language c)
+   (names zarith_bind_stubs)
+   (flags :standard -lgmp)
+ )
+ (modules faugere_zarith zarith_bind)
  (synopsis "Faugere with zarith bindings")
  (optional)
 )
+
+;The main target of this dune file is the bindings library. 
+;To build the library the following needs to happen. The exact order of steps isn't so important.
+; 1)Find the right fgb c libraries depending on the user's os, and copy these files to the build directory.
+;   That's the final rule stanza in this file.
+; 2)Generate the stub{.c/.ml} files, which give the interface to the c libraries.
+;   This is done by compiling and running gen.exe, which produces the appropriate files.
+; 3)Copy bindings.ml to bind.ml.
+;   Both gen.ml and the bindings library depend on bindings.ml. But dune won't allow this, so we simply rename bindings.ml
+; 4)Build the bindings library
+
+; Building the library requires some special care. We must use the foreign_archives attribute, so dune can track and find
+; the dependencies. Also, including the foreign archives will ensure those archives are installed with the library.
+; What complicates this is normally dune will look for both a .a and .so file when a foreign_archives attribute is included,
+; but no .so files are distributed with fgb. This can be fixed with the dune-workspace file at the root of the project.
+; Also, we include (modes native) to not try and build a .so file.
+
+;(library
+;  (name bindings)
+;  (public_name faugere.bindings)
+;  (libraries ctypes ctypes.foreign)
+;  (modules b stub bind common)
+;  (foreign_archives
+;    fgb
+;    fgbexp
+;    gb
+;    gbexp
+;    minpoly
+;    minpolyvgf
+;  )
+;  (foreign_stubs
+;   (include_dirs call_FGb/headers)
+;   (language c)
+;   (names stub)
+;   (flags :standard -lfgb -lfgbexp -lgb -lgbexp -lminpoly -lminpolyvgf -lgmp -lm -lstdc++ -lgomp -fopenmp -w)
+;  )
+;  (c_library_flags :standard -lfgb -lfgbexp -lgb -lgbexp -lminpoly -lminpolyvgf -lgmp -lm -lstdc++ -lgomp)
+;  (modes native)
+;)
+
+
+(executable
+  (name gen)
+  (modules gen bindings)
+  (libraries ctypes.stubs ctypes)
+)
+
+(rule
+  (targets stub.c stub.ml)
+  (deps gen.exe)
+  (action (run ./gen.exe))
+)
+
+(rule
+  (targets bind.ml)
+  (deps bindings.ml)
+  (action (copy bindings.ml bind.ml))
+)
+
+(rule
+  (targets libfgb.a libfgbexp.a libgb.a libgbexp.a libminpoly.a libminpolyvgf.a)
+  (action (progn
+    (copy call_FGb/nv/maple/C/%{system}/libfgb.a libfgb.a)
+    (copy call_FGb/nv/maple/C/%{system}/libfgbexp.a libfgbexp.a)
+    (copy call_FGb/nv/maple/C/%{system}/libgb.a libgb.a)
+    (copy call_FGb/nv/maple/C/%{system}/libgbexp.a libgbexp.a)
+    (copy call_FGb/nv/maple/C/%{system}/libminpoly.a libminpoly.a)
+    (copy call_FGb/nv/maple/C/%{system}/libminpolyvgf.a libminpolyvgf.a))
+  )
+)
+
+(rule
+  (targets zarith_bind.ml zarith_bind_stubs.c)
+  (deps zarith_bind.c.ml)
+  (action (run %{bin:ppx_cstubs} -I %{lib:zarith:.} zarith_bind.c.ml -o %{targets})))

@@ -1,7 +1,7 @@
 open Ctypes
-open Bindings.B
+open B
 
-include Bindings.Common
+include Common
 
 module type Fgb_opt = sig
 
@@ -15,8 +15,8 @@ end
 
 module Fgb_int (C : sig 
                     type coef
-                    val coef_to_mpz : coef -> mpz_t
-                    val mpz_to_coef : mpz_t -> coef
+                    val coef_to_mpz : coef -> unit Ctypes.ptr
+                    val mpz_to_coef : unit Ctypes.ptr -> coef
                     end) = struct 
  include Make (struct
     let power_set = power_set_int
@@ -24,9 +24,9 @@ module Fgb_int (C : sig
     type coef = C.coef
     type ccoef = mpz_t
     let ccoef = mpz_t
-    let coef_to_c = C.coef_to_mpz
+    let coef_to_c z = from_voidp B.mpz_struct (C.coef_to_mpz z)
 
-    let ccoef_to_ml = C.mpz_to_coef
+    let ccoef_to_ml mpz = C.mpz_to_coef (to_voidp mpz)
     let set_coef = set_coeff_gmp_int
     let creat_poly = creat_poly_int
     let set_exp = set_expos2_int
@@ -58,13 +58,14 @@ end
 module Fgb_int_str = 
   Fgb_int (struct
     type coef = string
-    let coef_to_mpz c = let res = CArray.start (CArray.make mpz_struct 1) in
+    let coef_to_mpz c = 
+      let res = CArray.start (CArray.make mpz_struct 1) in
       mpz_init_set_str res c 10;
-      res
+      to_voidp res
 
     let mpz_to_coef mpz = 
       let buff = from_voidp char null in
-      let res = mpz_get_str buff 10 mpz in
+      let res = mpz_get_str buff 10 (from_voidp B.mpz_struct mpz) in
       res
   end)
 

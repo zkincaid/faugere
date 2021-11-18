@@ -1,11 +1,11 @@
-open Faugere_zarith
+open Faugere
 
 (*This file gives an example of using the zarith version of fgb. *)
 
 (*These types are used to represent polynomials just within this file. *)
 type monic = Prod of (string * int) list
 
-type mon = Z.t * monic
+type mon = string * monic
 
 type poly = Sum of mon list
 
@@ -18,9 +18,9 @@ let monic_mon_to_string (Prod ms) =
   String.concat "" (List.map var_exp_to_string ms)
 
 let mon_to_string (c, Prod m) =
-  if m = [] then (Z.to_string c)
-  else if Z.compare c (Z.of_int 1) = 0 then (monic_mon_to_string (Prod m))
-  else (Z.to_string c) ^ (monic_mon_to_string (Prod m)) 
+  if m = [] then (c)
+  else if compare c "1" = 0 then (monic_mon_to_string (Prod m))
+  else (c) ^ (monic_mon_to_string (Prod m)) 
 
 let to_string (Sum p) = 
   String.concat " + " (List.map mon_to_string p)
@@ -62,11 +62,11 @@ let poly_to_libpoly (Sum mons) =
 
 
 let () = 
-  let p1 = Sum [(Z.of_int 1, Prod[("x1", 1); ("x2", 2)]); (Z.of_int 2, Prod[("x2", 1); ("x3", 1)])] in 
-  let p2 = Sum [(Z.of_int 1, Prod[("x1", 1); ("x3", 2)]); (Z.of_int 2, Prod[])] in
+  let p1 = Sum [("1", Prod[("x1", 1); ("x2", 2)]); ("2", Prod[("x2", 1); ("x3", 1)])] in 
+  let p2 = Sum [("1", Prod[("x1", 1); ("x3", 2)]); ("2", Prod[])] in
   print_endline "Input polynomials";
   print_endline (String.concat "\n" (List.map to_string [p1; p2]));
   let fpolys = List.map poly_to_libpoly [p1; p2] in
-  let gb = Fgb_int_zarith.fgb fpolys variables [] in
+  let gb = Fgb_int_str.fgb fpolys variables [] in
   print_endline "Grobner basis";
   print_endline (String.concat "\n" (List.map to_string (List.map libpoly_to_poly gb)))
