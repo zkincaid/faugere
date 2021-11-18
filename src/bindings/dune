@@ -3,21 +3,22 @@
   (libraries ctypes ctypes.foreign)
   (modules b stub bind common)
   (package faugere)
-  ;(foreign_archives
-  ;  fgb
-  ;  fgbexp
-  ;  gb
-  ;  gbexp
-  ;  minpoly
-  ;  minpolyvgf
-  ;)
+  (foreign_archives
+    fgb
+    fgbexp
+    gb
+    gbexp
+    minpoly
+    minpolyvgf
+  )
   (foreign_stubs
    (include_dirs call_FGb/headers)
    (language c)
    (names stub)
    (flags :standard -lfgb -lfgbexp -lgb -lgbexp -lminpoly -lminpolyvgf -lgmp -lm -lstdc++ -lgomp -fopenmp -w)
   )
-  (c_library_flags :standard -Lsrc/bindings -lfgb -lfgbexp -lgb -lgbexp -lminpoly -lminpolyvgf -lgmp -lm -lstdc++ -lgomp)
+  (c_library_flags :standard -lfgb -lfgbexp -lgb -lgbexp -lminpoly -lminpolyvgf -lgmp -lm -lstdc++ -lgomp)
+  (modes native)
 )
 
 
@@ -48,21 +49,5 @@
     (copy call_FGb/nv/maple/C/%{system}/libgbexp.a libgbexp.a)
     (copy call_FGb/nv/maple/C/%{system}/libminpoly.a libminpoly.a)
     (copy call_FGb/nv/maple/C/%{system}/libminpolyvgf.a libminpolyvgf.a))
-  )
-)
-
-;(install
-;  (section stublibs)
-;  (files libfgb.a libfgbexp.a libgb.a libgbexp.a libminpoly.a libminpolyvgf.a)
-;)
-
-(install
-  (section lib)
-  (files (libfgb.a as __private__/bindings/libfgb.a) 
-         (libfgbexp.a as __private__/bindings/libfgbexp.a)
-         (libgb.a as __private__/bindings/libgb.a)
-         (libgbexp.a as __private__/bindings/libgbexp.a)
-         (libminpoly.a as __private__/bindings/libminpoly.a)
-         (libminpolyvgf.a as __private__/bindings/libminpolyvgf.a)
   )
 )
