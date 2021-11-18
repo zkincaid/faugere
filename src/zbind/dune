@@ -1,6 +1,6 @@
 (library
   (name zbind)
-  (package faugere)
+  (public_name faugere.zbind)
   (libraries bindings ppx_cstubs ctypes ctypes.foreign zarith)
   (wrapped false)
   (foreign_stubs
@@ -12,6 +12,7 @@
   (modules zarith_bind)
 )
 
+;adapted from https://github.com/fdopen/ctypes-zarith/blob/master/lib/dune
 (rule
   (targets zarith_bind.ml zarith_bind_stubs.c)
   (deps zarith_bind.c.ml)

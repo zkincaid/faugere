@@ -1,3 +1,5 @@
+(**Faugere with zarith bindings.*)
+
 module Fgb_int_zarith : sig
 
   val set_max_output_size : int -> unit

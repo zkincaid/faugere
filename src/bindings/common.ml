@@ -1,6 +1,9 @@
+(**The main interface of the bindings library. Provides a functor which can be instantiated with different 
+   fgb functions to provide a rational and modular implementation of fgb. Not meant to be used by external users.*)
+
 open Ctypes
 
-include B
+open B
 
 type fmonic = int list
 

@@ -20,6 +20,7 @@ let write_extern_c () =
 let () = 
   let tmp_out = open_out "stub.c" in
   let ml_out = open_out "stub.ml" in
+  output_string ml_out "(**Generated stub file. Not meant to be used by users of the faugere package. *)";
   Cstubs.write_ml (Format.formatter_of_out_channel ml_out) ~prefix:"fgb_stub" (module Bindings.Bindings);
   output_string tmp_out "#include \"common.h\"\n#include \"call_fgb_int.h\"\n#include \"call_fgb_mod.h\"\n";
   Cstubs.write_c (Format.formatter_of_out_channel tmp_out) ~prefix:"fgb_stub" (module Bindings.Bindings);

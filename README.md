@@ -37,6 +37,6 @@ To install the library as a dev version through opam run:
 `opam install .`
 
 ## Usage
-If the package is installed, documentation can be viewed with `odig doc`. Or documentation can be build locally with `dune build @doc`, and then viewed in _build/default/_doc/_html.
+If the package is installed, documentation can be built with `odig odoc` and viewed with `odig doc`. Or documentation can be built locally with `dune build @doc`, and then viewed in _build/default/_doc/_html.
 
 example.ml gives an example of using faugere.zarith. To run use `dune exec ./example.exe`

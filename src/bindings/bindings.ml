@@ -1,3 +1,6 @@
+(**This module contains a functor which when provided with a stub.ml file will contatin all of the bindings to the fgb libraries. 
+   It is not meant to be used by users. *)
+
 open Ctypes
 
 

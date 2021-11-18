@@ -1,5 +1,5 @@
 open Ctypes
-(*open Bindings.B*)
+open Bindings.B
 
 include Bindings.Common
 

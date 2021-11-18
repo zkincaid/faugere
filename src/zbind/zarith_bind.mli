@@ -1,3 +1,9 @@
+(** The zbind library provides a conversion from Zarith.Z.t to a Ctypes pointer (essentially a *void). At the level of C this resulting pointer can be cast as an mpz_t type.
+    For the faugere package this pointer is passed to the fgb code as an mpz_t value. The actual conversion from Zarith.Z.t to *void is done via a function
+    distributed with the zarith package found in zarith.h.
+    
+    This code is not meant to be used by users of the faugere package.*)
+
 module MPZ : sig
 
   type t
@@ -5,16 +11,6 @@ module MPZ : sig
   type ptr = t Ctypes.abstract Ctypes.ptr
 
   val t : t Ctypes.abstract Ctypes.typ
-
-  val clear : ptr -> unit
-
-  val init : ptr -> unit
-
-  val set : Z.t -> ptr -> unit
-
-  val make : unit -> ptr
-  (** like {!Ctypes.make}, but with finalise and type already specified.
-  mpz is initialized. *)
 
   val of_z : Z.t -> ptr
 

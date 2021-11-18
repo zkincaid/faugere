@@ -1,3 +1,19 @@
+;The main target of this dune file is the bindings library. 
+;To build the library the following needs to happen. The exact order of steps isn't so important.
+; 1)Find the right fgb c libraries depending on the user's os, and copy these files to the build directory.
+;   That's the final rule stanza in this file.
+; 2)Generate the stub{.c/.ml} files, which give the interface to the c libraries.
+;   This is done by compiling and running gen.exe, which produces the appropriate files.
+; 3)Copy bindings.ml to bind.ml.
+;   Both gen.ml and the bindings library depend on bindings.ml. But dune won't allow this, so we simply rename bindings.ml
+; 4)Build the bindings library
+
+; Building the library requires some special care. We must use the foreign_archives attribute, so dune can track and find
+; the dependencies. Also, including the foreign archives will ensure those archives are installed with the library.
+; What complicates this is normally dune will look for both a .a and .so file when a foreign_archives attribute is included,
+; but no .so files are distributed with fgb. This can be fixed with the dune-workspace file at the root of the project.
+; Also, we include (modes native) to not try and build a .so file.
+
 (library
   (name bindings)
   (public_name faugere.bindings)

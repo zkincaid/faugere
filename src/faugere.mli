@@ -1,3 +1,5 @@
+(**The main interface for the Faugere package. *)
+
 
 (**{2:fgbtypes Fgb Types} *)
 
@@ -9,6 +11,7 @@ For example, within k\[x, y, z\] for some field k, [x^2yz^3] would be \[[2; 1; 3
 type 'a fmon = 'a * fmonic
 (**A monomial is a pair of a coefficient and a monic monomial.*)
 
+(**{2:Fgb options} *)
 
 module type Fgb_opt = sig
 (**Options that can be modified for the GB computation. *)
@@ -30,6 +33,8 @@ module type Fgb_opt = sig
   (**Set the number of threads fgb will use. Default is 1.*)
 
 end
+
+(**{2:Grobner basis implementations.} *)
 
 module Fgb_int_str : sig
 (**An implementation of fgb over the rationals. The coefficients are all infinite precision integers given as decimal strings. 
@@ -57,7 +62,7 @@ module Fgb_mod : sig
 
 end
 
-module Fgb_int : functor (C : sig type coef val coef_to_mpz : coef -> Bindings.Common.mpz_t val mpz_to_coef : Bindings.Common.mpz_t -> coef end) -> sig
+module Fgb_int : functor (C : sig type coef val coef_to_mpz : coef -> Bindings.B.mpz_t val mpz_to_coef : Bindings.B.mpz_t -> coef end) -> sig
   (**This functor can be instantiated to give an implementation of fgb over the rationals, but with the given type [coef] as coefficients. However, one must provide
   the translations from [coef] to a gmp mpz ptr and from an mpz ptr to [coef]. This is done in the optional library faugere.zarith, which uses zarith as the type of coefficients. *)
   

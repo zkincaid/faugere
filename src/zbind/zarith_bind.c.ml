@@ -1,3 +1,5 @@
+(**Copied from https://github.com/fdopen/ctypes-zarith/blob/master/lib/ctypes_zarith.c.ml *)
+
 let%c () = header {|
 #include <gmp.h>
 #include <zarith.h>

@@ -8,7 +8,7 @@
 (library
  (name faugere_zarith)
  (public_name faugere.zarith)
- (libraries faugere.bindings ctypes zbind faugere)
+ (libraries faugere.bindings ctypes faugere.zbind faugere)
  (modules faugere_zarith)
  (optional)
 )
