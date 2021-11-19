@@ -4,22 +4,22 @@
  (libraries ctypes)
  (synopsis "The Faugere package entry point")
  (modules :standard \ gen bindings faugere_zarith zarith_bind)
-  (foreign_archives
-    fgb
-    fgbexp
-    gb
-    gbexp
-    minpoly
-    minpolyvgf
-  )
+  ;(foreign_archives
+  ;  fgb
+  ;  fgbexp
+  ;  gb
+  ;  gbexp
+  ;  minpoly
+  ;  minpolyvgf
+  ;)
   (foreign_stubs
    (include_dirs call_FGb/headers)
    (language c)
    (names stub)
    (flags :standard -lfgb -lfgbexp -lgb -lgbexp -lminpoly -lminpolyvgf -lgmp -lm -lstdc++ -lgomp -fopenmp -w)
   )
-  (c_library_flags :standard -lfgb -lfgbexp -lgb -lgbexp -lminpoly -lminpolyvgf -lgmp -lm -lstdc++ -lgomp)
-  (modes native)
+  (c_library_flags :standard -Lsrc -lfgb -lfgbexp -lgb -lgbexp -lminpoly -lminpolyvgf -lgmp -lm -lstdc++ -lgomp)
+  ;(modes native)
 )
 
 (library
@@ -110,3 +110,14 @@
   (targets zarith_bind.ml zarith_bind_stubs.c)
   (deps zarith_bind.c.ml)
   (action (run %{bin:ppx_cstubs} -I %{lib:zarith:.} zarith_bind.c.ml -o %{targets})))
+
+(install
+  (section lib)
+  (files libfgb.a
+         libfgbexp.a
+         libgb.a
+         libgbexp.a
+         libminpoly.a
+         libminpolyvgf.a
+  )
+)
