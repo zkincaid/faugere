@@ -16,6 +16,7 @@
    (ctypes :build)
    (ctypes-foreign :build)
    (ppx_cstubs :build)
+   (unix :build)
  )
  (depopts
    (zarith :build)

@@ -12,6 +12,7 @@ depends: [
   "ctypes" {build}
   "ctypes-foreign" {build}
   "ppx_cstubs" {build}
+  "unix" {build}
   "odoc" {with-doc}
 ]
 depopts: [
