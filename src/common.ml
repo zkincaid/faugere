@@ -35,6 +35,8 @@ module Make (A : sig
 
   let set_max_output_size size = max_output_size := size
 
+  let fgb_verbosity = ref 0
+
   let options =
     let opt = make sfgb_options in 
     let fgb_comp_des = make sfgb_comp_desc in
@@ -59,6 +61,7 @@ module Make (A : sig
     setf (getf options env) index (Unsigned.UInt32.of_int size)
 
   let set_fgb_verbosity v = 
+    fgb_verbosity := v;
     setf options verb v
 
   let set_force_elim flag = 
@@ -101,5 +104,17 @@ module Make (A : sig
       (A.ccoef_to_ml cf, exp)
     in
     List.map2 mapper cfs_list exp_list
+
+  (* This is a hacky and probably incorrect way to solve the issue of fgb printing out "open simulation" even if verbosity is 0.
+     Here this function temporarily redirects stderr output to dev/null, evaluates the given function, and resets stderr back
+     after. *)
+  let temp_redirect f a = 
+    let old_stderr = Unix.dup Unix.stderr in
+    let new_stderr = open_out "/dev/null" in
+    Unix.dup2 (Unix.descr_of_out_channel new_stderr) Unix.stderr;
+    let res = f a in
+    flush stderr;
+    Unix.dup2 old_stderr Unix.stderr;
+    res
 
 end

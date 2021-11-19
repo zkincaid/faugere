@@ -46,7 +46,10 @@ module Fgb_int (C : sig
     let cpolys = List.map create_poly polys in
     let input_basis = CArray.start (CArray.of_list dpol cpolys) in
     let t0 = allocate_n double ~count:1 in
-    let num_out = fgb_int input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int !max_output_size) t0 (addr options) in
+    let num_out = 
+      (* redirect stderr if verbosity is 0 *)
+      if !fgb_verbosity = 0 then temp_redirect (fgb_int input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int !max_output_size) t0) (addr options)
+      else fgb_int input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int !max_output_size) t0 (addr options) in
     let opolys = CArray.to_list (CArray.from_ptr output_basis (Unsigned.UInt32.to_int num_out)) in
     let res = List.map (export_poly n_vars) opolys in
     reset_memory_int (); (*not sure if these lines are necessary*)
@@ -99,7 +102,10 @@ module Fgb_mod = struct
     let cpolys = List.map create_poly polys in
     let input_basis = CArray.start (CArray.of_list dpol cpolys) in
     let t0 = allocate_n double ~count:1 in
-    let num_out = fgb input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int !max_output_size) t0 (addr options) in
+    let num_out = 
+      if !fgb_verbosity = 0 then temp_redirect (fgb_int input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int !max_output_size) t0) (addr options)
+      else fgb_int input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int !max_output_size) t0 (addr options) in
+    (*let num_out = fgb input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int !max_output_size) t0 (addr options) in*)
     let opolys = CArray.to_list (CArray.from_ptr output_basis (Unsigned.UInt32.to_int num_out)) in
     let res = List.map (export_poly n_vars) opolys in
     reset_memory (); (*not sure if these lines are necessary*)
