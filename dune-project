@@ -7,7 +7,7 @@
 (homepage "github.com/cyphertjohn/faugere")
 (bug_reports "github.com/cyphertjohn/faugere")
 
-(generate_opam_files true)
+(generate_opam_files false)
 
 (package
  (name faugere)
