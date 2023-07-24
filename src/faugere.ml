@@ -53,6 +53,7 @@ module Fgb_int (C : sig
           if !fgb_verbosity = 0 then temp_redirect (fgb_int input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int !max_output_size) t0) (addr options)
           else fgb_int input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int !max_output_size) t0 (addr options) 
         in
+      print_endline ("Num out" ^ (string_of_int (Unsigned.UInt32.to_int num_out)));
       let opolys = CArray.to_list (CArray.from_ptr output_basis (Unsigned.UInt32.to_int num_out)) in
       let res = List.map (export_poly n_vars) opolys in
       reset_memory_int (); (*not sure if these lines are necessary*)
