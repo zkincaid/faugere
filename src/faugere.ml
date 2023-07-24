@@ -37,7 +37,7 @@ module Fgb_int (C : sig
 
   let fgb polys block1 block2 = 
     print_endline "Running fgb";
-    try 
+    let f () =
       saveptr_int ();         (* not sure if it's necessary to do this here.*)
       init_integers ();
       set_order block1 block2;
@@ -58,7 +58,11 @@ module Fgb_int (C : sig
       reset_memory_int (); (*not sure if these lines are necessary*)
       restoreptr_int ();
       res
-    with e -> 
+    in
+    let fm = (Result.map f) in 
+    match fm (Ok ()) with
+    | Ok x -> x
+    | Error e ->
       let msg = Printexc.to_string e
       and stack = Printexc.get_backtrace () in
       Printf.eprintf "there was an error: %s%s\n" msg stack;
