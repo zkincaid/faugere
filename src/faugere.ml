@@ -36,32 +36,33 @@ module Fgb_int (C : sig
   end)
 
   let fgb polys block1 block2 = 
-    saveptr_int ();         (* not sure if it's necessary to do this here.*)
-    init_integers ();
-    set_order block1 block2;
-    threads_fgb !number_of_threads;
-    let n_vars = List.length block1 + List.length block2 in
-    let output_basis = allocate_n dpol ~count:!max_output_size in
-    let n_input = List.length polys in
-    let cpolys = List.map create_poly polys in
-    let input_basis = CArray.start (CArray.of_list dpol cpolys) in
-    let t0 = allocate_n double ~count:1 in
-    let num_out = 
-      try
-        (* redirect stderr if verbosity is 0 *)
-        if !fgb_verbosity = 0 then temp_redirect (fgb_int input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int !max_output_size) t0) (addr options)
-        else fgb_int input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int !max_output_size) t0 (addr options) 
-      with a -> 
-        match a with
-        | Failure s -> failwith ("failed with " ^ s)
-        | Sys_error s -> failwith ("Sys error " ^ s)
-        | _ -> failwith "Unknown exception"
-      in
-    let opolys = CArray.to_list (CArray.from_ptr output_basis (Unsigned.UInt32.to_int num_out)) in
-    let res = List.map (export_poly n_vars) opolys in
-    reset_memory_int (); (*not sure if these lines are necessary*)
-    restoreptr_int ();
-    res
+    print_endline "Running fgb";
+    try 
+      saveptr_int ();         (* not sure if it's necessary to do this here.*)
+      init_integers ();
+      set_order block1 block2;
+      threads_fgb !number_of_threads;
+      let n_vars = List.length block1 + List.length block2 in
+      let output_basis = allocate_n dpol ~count:!max_output_size in
+      let n_input = List.length polys in
+      let cpolys = List.map create_poly polys in
+      let input_basis = CArray.start (CArray.of_list dpol cpolys) in
+      let t0 = allocate_n double ~count:1 in
+      let num_out = 
+          (* redirect stderr if verbosity is 0 *)
+          if !fgb_verbosity = 0 then temp_redirect (fgb_int input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int !max_output_size) t0) (addr options)
+          else fgb_int input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int !max_output_size) t0 (addr options) 
+        in
+      let opolys = CArray.to_list (CArray.from_ptr output_basis (Unsigned.UInt32.to_int num_out)) in
+      let res = List.map (export_poly n_vars) opolys in
+      reset_memory_int (); (*not sure if these lines are necessary*)
+      restoreptr_int ();
+      res
+    with e -> 
+      let msg = Printexc.to_string e
+      and stack = Printexc.get_backtrace () in
+      Printf.eprintf "there was an error: %s%s\n" msg stack;
+      raise e
 
 end
 
