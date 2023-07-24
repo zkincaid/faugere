@@ -60,7 +60,8 @@ module Fgb_int (C : sig
       restoreptr_int ();
       res
     in
-    Unix.handle_unix_error f ()
+    try f ()
+    with Failure s -> failwith s
 
 end
 
