@@ -47,9 +47,16 @@ module Fgb_int (C : sig
     let input_basis = CArray.start (CArray.of_list dpol cpolys) in
     let t0 = allocate_n double ~count:1 in
     let num_out = 
-      (* redirect stderr if verbosity is 0 *)
-      if !fgb_verbosity = 0 then temp_redirect (fgb_int input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int !max_output_size) t0) (addr options)
-      else fgb_int input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int !max_output_size) t0 (addr options) in
+      try
+        (* redirect stderr if verbosity is 0 *)
+        if !fgb_verbosity = 0 then temp_redirect (fgb_int input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int !max_output_size) t0) (addr options)
+        else fgb_int input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int !max_output_size) t0 (addr options) 
+      with a -> 
+        match a with
+        | Failure s -> failwith ("failed with " ^ s)
+        | Sys_error s -> failwith ("Sys error " ^ s)
+        | _ -> failwith "Unknown exception"
+      in
     let opolys = CArray.to_list (CArray.from_ptr output_basis (Unsigned.UInt32.to_int num_out)) in
     let res = List.map (export_poly n_vars) opolys in
     reset_memory_int (); (*not sure if these lines are necessary*)
