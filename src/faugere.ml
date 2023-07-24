@@ -60,14 +60,7 @@ module Fgb_int (C : sig
       restoreptr_int ();
       res
     in
-    let fm = (Result.map f) in 
-    match fm (Ok ()) with
-    | Ok x -> x
-    | Error e ->
-      let msg = Printexc.to_string e
-      and stack = Printexc.get_backtrace () in
-      Printf.eprintf "there was an error: %s%s\n" msg stack;
-      raise e
+    Unix.handle_unix_error f ()
 
 end
 
