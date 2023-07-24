@@ -38,7 +38,7 @@ void info_Maple(const char* s)
 
 void FGb_int_error_Maple(const char* s)
 {
-  fprintf(stderr,"%s",s);
+  fprintf(stderr,"Blah: is exiting %s",s);
   fflush(stderr);
   exit(3);
 }
