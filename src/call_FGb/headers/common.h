@@ -31,8 +31,7 @@ void info_Maple(const char* s)
 {
   if (FGb_verb_info)
     {
-      fprintf(stderr,"%s",s);
-      fflush(stderr);
+      printf("%s",s);
     }
 }
 
