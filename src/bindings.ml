@@ -4,7 +4,7 @@
 open Ctypes
 
 
-module Bindings (F : Cstubs.FOREIGN) = struct
+module Bindings (F : FOREIGN) = struct
   open F
  
   let expos = typedef (ptr void) "Expos"
