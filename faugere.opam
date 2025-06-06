@@ -9,8 +9,8 @@ homepage: "github.com/cyphertjohn/faugere"
 bug-reports: "github.com/cyphertjohn/faugere"
 depends: [
   "dune" {>= "2.9"}
-  "ctypes" {build}
-  "ctypes-foreign" {build}
+  "ctypes" {build & >= "0.22.0"}
+  "ctypes-foreign" {build & >= "0.22.0"}
   "ppx_cstubs" {build}
   "odoc" {with-doc}
 ]

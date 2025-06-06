@@ -31,16 +31,13 @@ void info_Maple(const char* s)
 {
   if (FGb_verb_info)
     {
-      fprintf(stderr,"%s",s);
-      fflush(stderr);
+      printf("%s",s);
     }
 }
 
 void FGb_int_error_Maple(const char* s)
 {
-  fprintf(stderr,"%s",s);
-  fflush(stderr);
-  exit(3);
+  caml_failwith(s);
 }
 
 void FGb_error_Maple(const char* s)

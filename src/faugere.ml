@@ -3,6 +3,8 @@ open B
 
 include Common
 
+exception FgbE of string
+
 module type Fgb_opt = sig
 
   val set_max_output_size : int -> unit
@@ -36,25 +38,28 @@ module Fgb_int (C : sig
   end)
 
   let fgb polys block1 block2 = 
-    saveptr_int ();         (* not sure if it's necessary to do this here.*)
-    init_integers ();
-    set_order block1 block2;
-    threads_fgb !number_of_threads;
-    let n_vars = List.length block1 + List.length block2 in
-    let output_basis = allocate_n dpol ~count:!max_output_size in
-    let n_input = List.length polys in
-    let cpolys = List.map create_poly polys in
-    let input_basis = CArray.start (CArray.of_list dpol cpolys) in
-    let t0 = allocate_n double ~count:1 in
-    let num_out = 
-      (* redirect stderr if verbosity is 0 *)
-      if !fgb_verbosity = 0 then temp_redirect (fgb_int input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int !max_output_size) t0) (addr options)
-      else fgb_int input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int !max_output_size) t0 (addr options) in
-    let opolys = CArray.to_list (CArray.from_ptr output_basis (Unsigned.UInt32.to_int num_out)) in
-    let res = List.map (export_poly n_vars) opolys in
-    reset_memory_int (); (*not sure if these lines are necessary*)
-    restoreptr_int ();
-    res
+    try
+      saveptr_int ();         (* not sure if it's necessary to do this here.*)
+      init_integers ();
+      set_order block1 block2;
+      threads_fgb !number_of_threads;
+      let n_vars = List.length block1 + List.length block2 in
+      let output_basis = allocate_n dpol ~count:!max_output_size in
+      let n_input = List.length polys in
+      let cpolys = List.map create_poly polys in
+      let input_basis = CArray.start (CArray.of_list dpol cpolys) in
+      let t0 = allocate_n double ~count:1 in
+      let num_out = 
+          (* redirect stderr if verbosity is 0 *)
+          if !fgb_verbosity = 0 then temp_redirect (fgb_int input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int !max_output_size) t0) (addr options)
+          else fgb_int input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int !max_output_size) t0 (addr options) 
+        in
+      let opolys = CArray.to_list (CArray.from_ptr output_basis (Unsigned.UInt32.to_int num_out)) in
+      let res = List.map (export_poly n_vars) opolys in
+      reset_memory_int (); (*not sure if these lines are necessary*)
+      restoreptr_int ();
+      res
+    with Failure s -> raise (FgbE s)
 
 end
 
@@ -92,25 +97,27 @@ module Fgb_mod = struct
   end)
 
   let fgb polys block1 block2 modulus = 
-    saveptr ();         (* not sure if it's necessary to do this here.*)
-    init_modp modulus;
-    set_order block1 block2;
-    threads_fgb !number_of_threads;
-    let n_vars = List.length block1 + List.length block2 in
-    let output_basis = allocate_n dpol ~count:!max_output_size in
-    let n_input = List.length polys in
-    let cpolys = List.map create_poly polys in
-    let input_basis = CArray.start (CArray.of_list dpol cpolys) in
-    let t0 = allocate_n double ~count:1 in
-    let num_out = 
-      if !fgb_verbosity = 0 then temp_redirect (fgb_int input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int !max_output_size) t0) (addr options)
-      else fgb_int input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int !max_output_size) t0 (addr options) in
-    (*let num_out = fgb input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int !max_output_size) t0 (addr options) in*)
-    let opolys = CArray.to_list (CArray.from_ptr output_basis (Unsigned.UInt32.to_int num_out)) in
-    let res = List.map (export_poly n_vars) opolys in
-    reset_memory (); (*not sure if these lines are necessary*)
-    restoreptr ();
-    res
+    try 
+      saveptr ();         (* not sure if it's necessary to do this here.*)
+      init_modp modulus;
+      set_order block1 block2;
+      threads_fgb !number_of_threads;
+      let n_vars = List.length block1 + List.length block2 in
+      let output_basis = allocate_n dpol ~count:!max_output_size in
+      let n_input = List.length polys in
+      let cpolys = List.map create_poly polys in
+      let input_basis = CArray.start (CArray.of_list dpol cpolys) in
+      let t0 = allocate_n double ~count:1 in
+      let num_out = 
+        if !fgb_verbosity = 0 then temp_redirect (fgb_int input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int !max_output_size) t0) (addr options)
+        else fgb_int input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int !max_output_size) t0 (addr options) in
+      (*let num_out = fgb input_basis (Unsigned.UInt32.of_int n_input) output_basis (Unsigned.UInt32.of_int !max_output_size) t0 (addr options) in*)
+      let opolys = CArray.to_list (CArray.from_ptr output_basis (Unsigned.UInt32.to_int num_out)) in
+      let res = List.map (export_poly n_vars) opolys in
+      reset_memory (); (*not sure if these lines are necessary*)
+      restoreptr ();
+      res
+    with Failure s -> raise (FgbE s)
 
 end
 

@@ -13,8 +13,8 @@
  (name faugere)
  (synopsis "Provides an interface to a c library implementing Faugere's Grobner basis algorithms")
  (depends
-   (ctypes :build)
-   (ctypes-foreign :build)
+   (ctypes (and :build (>= 0.22.0)))
+   (ctypes-foreign (and :build (>= 0.22.0)))
    (ppx_cstubs :build)
  )
  (depopts

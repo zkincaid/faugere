@@ -1,5 +1,7 @@
 (**The main interface for the Faugere package. *)
 
+(** Internal Fgb exceptions*)
+exception FgbE of string
 
 (**{2:fgbtypes Fgb Types} *)
 
@@ -48,7 +50,8 @@ module Fgb_int_str : sig
   for any monomials m1 and m2 where, m1 contains variables in [block1] but m2 does not, m1>m2. The monomial order within each block is degree reverse
   lexicographic defined by the order of the variables in the given list. That is [fgb polys \["x"; "y"; "z"\] \[\]] defines a drl order with [x] > [y] > [z].
   As in the previous example [block2] can be empty, indicated a normal drl order. However, [block1] must be non-empty. For the input polynomials to be 
-  well formed the integer lists representing each monic monomial need to have the same length as [block1 @ block2]. *)
+  well formed the integer lists representing each monic monomial need to have the same length as [block1 @ block2]. 
+  @raise FgbE If Fgb throws exception. Most likely exceeded matrix bounds.*)
 
 end
 

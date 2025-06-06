@@ -109,12 +109,13 @@ module Make (A : sig
      Here this function temporarily redirects stderr output to dev/null, evaluates the given function, and resets stderr back
      after. *)
   let temp_redirect f a = 
-    let old_stderr = Unix.dup Unix.stderr in
+    let old_stderr = Unix.dup ~cloexec:true Unix.stderr in
     let new_stderr = open_out "/dev/null" in
-    Unix.dup2 (Unix.descr_of_out_channel new_stderr) Unix.stderr;
+    Unix.dup2 ~cloexec:true (Unix.descr_of_out_channel new_stderr) Unix.stderr;
     let res = f a in
     flush stderr;
-    Unix.dup2 old_stderr Unix.stderr;
+    Unix.dup2 ~cloexec:true old_stderr Unix.stderr;
+    close_out new_stderr;
     res
 
 end
